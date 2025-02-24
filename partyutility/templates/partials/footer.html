@@ -1,0 +1,21 @@
+<footer class="bg-gray-900 text-white py-6">
+    <div class="container mx-auto flex flex-col md:flex-row items-center justify-between px-4">
+        <ul class="flex space-x-6">
+            <li>
+                <a href="https://example.com/" class="text-gray-400 hover:text-white">
+                    <span class="sr-only">Social Link</span>
+                    <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                        <path d="M..." /> <!-- Replace with actual icon -->
+                    </svg>
+                </a>
+            </li>
+        </ul>
+        <p class="text-gray-400 text-sm mt-4 md:mt-0">
+            © 2019-<span id="currentYear"></span>, Redacted.
+        </p>
+    </div>
+</footer>
+
+<script>
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+</script>

@@ -1,0 +1,21 @@
+<header class="bg-white shadow-md">
+    <div class="container mx-auto flex items-center justify-between p-4">
+        <a href="{% url 'index' %}" class="text-xl font-bold text-gray-900">Party Utility</a>
+
+        <input class="hidden" type="checkbox" id="menu-btn" />
+        <label for="menu-btn" class="cursor-pointer md:hidden">
+            <span class="block w-6 h-1 bg-gray-900 mb-1"></span>
+            <span class="block w-6 h-1 bg-gray-900 mb-1"></span>
+            <span class="block w-6 h-1 bg-gray-900"></span>
+        </label>
+
+        <ul class="hidden md:flex space-x-6">
+            <li>
+                <a href="{% url 'index' %}"
+                   class="text-gray-700 hover:text-gray-900 {% if '/example/' in request.path %}font-bold{% endif %}">
+                    Example
+                </a>
+            </li>
+        </ul>
+    </div>
+</header>

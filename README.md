@@ -10,41 +10,41 @@ https://django-template.vercel.app/
 
 ## How it Works
 
-Our Django application, `example` is configured as an installed application in `api/settings.py`:
+Our Django application, `partyutility` is configured as an installed application in `config/settings.py`:
 
 ```python
-# api/settings.py
+# config/settings.py
 INSTALLED_APPS = [
     # ...
-    'example',
+    'partyutility',
 ]
 ```
 
 We allow "\*.vercel.app" subdomains in `ALLOWED_HOSTS`, in addition to 127.0.0.1:
 
 ```python
-# api/settings.py
+# config/settings.py
 ALLOWED_HOSTS = ['127.0.0.1', '.vercel.app']
 ```
 
 The `wsgi` module must use a public variable named `app` to expose the WSGI application:
 
 ```python
-# api/wsgi.py
+# config/wsgi.py
 app = get_wsgi_application()
 ```
 
-The corresponding `WSGI_APPLICATION` setting is configured to use the `app` variable from the `api.wsgi` module:
+The corresponding `WSGI_APPLICATION` setting is configured to use the `app` variable from the `config.wsgi` module:
 
 ```python
-# api/settings.py
-WSGI_APPLICATION = 'api.wsgi.app'
+# config/settings.py
+WSGI_APPLICATION = 'config.wsgi.app'
 ```
 
-There is a single view which renders the current time in `example/views.py`:
+There is a single view which renders the current time in `partyutility/views.py`:
 
 ```python
-# example/views.py
+# partyutility/views.py
 from datetime import datetime
 
 from django.http import HttpResponse
@@ -63,29 +63,28 @@ def index(request):
     return HttpResponse(html)
 ```
 
-This view is exposed a URL through `example/urls.py`:
+This view is exposed a URL through `partyutility/urls.py`:
 
 ```python
-# example/urls.py
+# partyutility/urls.py
 from django.urls import path
 
-from example.views import index
-
+from partyutility.views import index
 
 urlpatterns = [
     path('', index),
 ]
 ```
 
-Finally, it's made accessible to the Django server inside `api/urls.py`:
+Finally, it's made accessible to the Django server inside `config/urls.py`:
 
 ```python
-# api/urls.py
+# config/urls.py
 from django.urls import path, include
 
 urlpatterns = [
     ...
-    path('', include('example.urls')),
+    path('', include('partyutility.urls')),
 ]
 ```
 
