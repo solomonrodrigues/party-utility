@@ -10,10 +10,10 @@ https://django-template.vercel.app/
 
 ## How it Works
 
-Our Django application, `partyutility` is configured as an installed application in `config/settings.py`:
+Our Django application, `partyutility` is configured as an installed application in `api/settings.py`:
 
 ```python
-# config/settings.py
+# api/settings.py
 INSTALLED_APPS = [
     # ...
     'partyutility',
@@ -23,22 +23,22 @@ INSTALLED_APPS = [
 We allow "\*.vercel.app" subdomains in `ALLOWED_HOSTS`, in addition to 127.0.0.1:
 
 ```python
-# config/settings.py
+# api/settings.py
 ALLOWED_HOSTS = ['127.0.0.1', '.vercel.app']
 ```
 
 The `wsgi` module must use a public variable named `app` to expose the WSGI application:
 
 ```python
-# config/wsgi.py
+# api/wsgi.py
 app = get_wsgi_application()
 ```
 
-The corresponding `WSGI_APPLICATION` setting is configured to use the `app` variable from the `config.wsgi` module:
+The corresponding `WSGI_APPLICATION` setting is configured to use the `app` variable from the `api.wsgi` module:
 
 ```python
-# config/settings.py
-WSGI_APPLICATION = 'config.wsgi.app'
+# api/settings.py
+WSGI_APPLICATION = 'api.wsgi.app'
 ```
 
 There is a single view which renders the current time in `partyutility/views.py`:
@@ -76,10 +76,10 @@ urlpatterns = [
 ]
 ```
 
-Finally, it's made accessible to the Django server inside `config/urls.py`:
+Finally, it's made accessible to the Django server inside `api/urls.py`:
 
 ```python
-# config/urls.py
+# api/urls.py
 from django.urls import path, include
 
 urlpatterns = [
