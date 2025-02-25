@@ -1,5 +1,5 @@
 echo "BUILD START"
-python3 -m pip install --upgrade pip  # Ensure the latest pip version
-python3 -m pip install -r requirements.txt  # Install all dependencies
-python3 manage.py collectstatic --noinput --clear  # Collect static files
+python3 -m pip install --upgrade pip || { echo "pip upgrade failed"; exit 1; }
+python3 -m pip install -r requirements.txt || { echo "requirements install failed"; exit 1; }
+python3 manage.py collectstatic --noinput --clear --settings=api.settings.production || { echo "collectstatic failed"; exit 1; }
 echo "BUILD END"
