@@ -1,99 +1,89 @@
-/* Cyberpunk Theme CSS - styles.css */
-
-/* Custom Utility Classes */
-.font-orbitron {
-    font-family: 'Orbitron', sans-serif;
+:root {
+    --primary: #6366f1;    /* Indigo */
+    --primary-light: #818cf8;
+    --secondary: #ec4899;  /* Pink */
+    --accent: #06b6d4;     /* Cyan */
+    --background: #f9fafb;
+    --card-bg: #ffffff;
+    --text: #1f2937;
+    --text-light: #6b7280;
 }
 
-.font-mono {
-    font-family: 'Share Tech Mono', monospace;
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--background);
+    color: var(--text);
 }
 
-.shadow-glow-cyan {
-    box-shadow: 0 0 5px #0ff, 0 0 10px #0ff;
+.gradient-primary {
+    background-image: linear-gradient(135deg, var(--primary), var(--secondary));
 }
 
-.shadow-glow-purple {
-    box-shadow: 0 0 5px #f0f, 0 0 10px #f0f;
+.gradient-accent {
+    background-image: linear-gradient(135deg, var(--secondary), var(--accent));
 }
 
-.shadow-glow-yellow {
-    box-shadow: 0 0 5px #ff0, 0 0 10px #ff0;
+.btn-primary {
+    background-image: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    font-weight: 500;
+    padding: 0.5rem 1.5rem;
+    border-radius: 9999px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.2);
 }
 
-/* Glitch effect */
-@keyframes glitch {
-    0% { transform: translate(0); }
-    20% { transform: translate(-2px, 2px); }
-    40% { transform: translate(-2px, -2px); }
-    60% { transform: translate(2px, 2px); }
-    80% { transform: translate(2px, -2px); }
-    100% { transform: translate(0); }
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
 }
 
-.glitch:hover {
-    animation: glitch 0.3s linear infinite;
+.btn-secondary {
+    background-image: linear-gradient(135deg, var(--secondary), var(--accent));
+    color: white;
+    font-weight: 500;
+    padding: 0.5rem 1.5rem;
+    border-radius: 9999px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(236, 72, 153, 0.2);
 }
 
-/* Terminal blinking cursor */
-.terminal-cursor::after {
-    content: '|';
-    animation: blink 1s step-end infinite;
+.btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(236, 72, 153, 0.3);
 }
 
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
+.card {
+    background-color: var(--card-bg);
+    border-radius: 1rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.3s ease;
 }
 
-/* CRT flicker effect */
-@keyframes flicker {
-    0% { opacity: 0.9; }
-    5% { opacity: 0.8; }
-    10% { opacity: 0.9; }
-    15% { opacity: 1; }
-    20% { opacity: 0.9; }
-    25% { opacity: 1; }
-    30% { opacity: 0.9; }
-    35% { opacity: 0.8; }
-    40% { opacity: 1; }
-    45% { opacity: 0.9; }
-    50% { opacity: 1; }
-    55% { opacity: 0.9; }
-    60% { opacity: 1; }
-    65% { opacity: 0.9; }
-    70% { opacity: 0.8; }
-    75% { opacity: 0.9; }
-    80% { opacity: 1; }
-    85% { opacity: 0.8; }
-    90% { opacity: 0.9; }
-    95% { opacity: 0.8; }
-    100% { opacity: 1; }
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
 }
 
-.crt-flicker {
-    animation: flicker 5s infinite;
+/* HTMX Animations */
+.htmx-indicator {
+    opacity: 0;
+    transition: opacity 200ms ease-in;
+}
+.htmx-request .htmx-indicator {
+    opacity: 1
+}
+.htmx-request.htmx-indicator {
+    opacity: 1
 }
 
-/* Mobile menu styles */
-#menu-btn:checked ~ ul {
-    display: block;
-    position: absolute;
-    top: 100%;
-    right: 0;
-    left: 0;
-    background-color: #0a0b0e;
-    border-bottom: 1px solid rgba(0, 255, 255, 0.3);
-    padding: 1rem;
-    z-index: 50;
+/* Fade in animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-/* Making the mobile menu items look cyberpunk */
-#menu-btn:checked ~ ul li {
-    padding: 0.75rem 0;
-    border-bottom: 1px solid rgba(0, 255, 255, 0.1);
-}
-
-#menu-btn:checked ~ ul li:last-child {
-    border-bottom: none;
+.fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
 }
