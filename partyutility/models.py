@@ -44,7 +44,6 @@ class Player(models.Model):
     """Player in a party, can be associated with a user account or be a guest"""
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     party = models.ForeignKey(Party, on_delete=models.CASCADE, related_name="players")
-    username = models.CharField(max_length=50)
     name = models.CharField(max_length=50)
     team = models.ForeignKey(Team, on_delete=models.SET_NULL, null=True, blank=True, related_name="players")
     is_host = models.BooleanField(default=False)
