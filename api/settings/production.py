@@ -26,21 +26,21 @@ ALLOWED_HOSTS = [
 CSRF_TRUSTED_ORIGINS = ['https://party-utility.vercel.app']
 
 # Lockdown settings
-INSTALLED_APPS += [
-    'lockdown',
-]
+# INSTALLED_APPS += [
+#     'lockdown',
+# ]
 
-MIDDLEWARE += [
-    'lockdown.middleware.LockdownMiddleware',
-]
+# MIDDLEWARE += [
+#     'lockdown.middleware.LockdownMiddleware',
+# ]
 
-LOCKDOWN_ENABLED = False
-LOCKDOWN_PASSWORDS = ('2023novapumpkin2023',)
-LOCKDOWN_AUTHFORM_STAFF_ONLY = False
-LOCKDOWN_URL_EXCEPTIONS = [
-    r'^/static/*',   # unlock /static/*
-    r'^/robots.txt$',
-]
+# LOCKDOWN_ENABLED = False
+# LOCKDOWN_PASSWORDS = ('2023novapumpkin2023',)
+# LOCKDOWN_AUTHFORM_STAFF_ONLY = False
+# LOCKDOWN_URL_EXCEPTIONS = [
+#     r'^/static/*',   # unlock /static/*
+#     r'^/robots.txt$',
+# ]
 
 # Sentry initialization.
 # sentry_sdk.init(
