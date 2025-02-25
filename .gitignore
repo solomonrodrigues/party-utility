@@ -16,3 +16,6 @@ venv.bak/
 
 # IDE settings
 .idea
+
+# Collected static files
+api/static/
