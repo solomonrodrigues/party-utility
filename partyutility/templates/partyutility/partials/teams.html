@@ -1,0 +1,28 @@
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+    {% for team in teams %}
+    <div class="border rounded-lg overflow-hidden">
+        <div class="py-2 px-4 bg-{{ team.color }}-100 border-b">
+            <h3 class="font-semibold text-{{ team.color }}-800">{{ team.name }}</h3>
+        </div>
+        <div class="p-4">
+            <ul class="space-y-2">
+                {% for player in team.players.all %}
+                <li class="flex items-center">
+                    <span class="w-4 h-4 mr-2 rounded-full bg-{{ team.color }}-500"></span>
+                    {{ player.name }}
+                    {% if player.is_host %}
+                    <span class="ml-2 bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded">Host</span>
+                    {% endif %}
+                </li>
+                {% empty %}
+                <li class="text-gray-500 text-sm">No players assigned</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-span-full text-center py-4 text-gray-500">
+        Click "Generate Teams" to create random teams.
+    </div>
+    {% endfor %}
+</div>

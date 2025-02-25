@@ -1,0 +1,88 @@
+{% extends 'fullbase.html' %}
+{% load static %}
+
+{% block title %}Party Room - {{ party_code }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="bg-white rounded-2xl shadow-sm p-6 mb-8">
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h1 class="text-2xl font-bold">Party Room: <span class="text-indigo-600">{{ party_code }}</span></h1>
+                <p class="text-gray-600">Share this code with your friends to join</p>
+            </div>
+            <button class="btn-secondary text-sm px-4 py-2" onclick="navigator.clipboard.writeText('{{ party_code }}')">
+                Copy Code
+            </button>
+        </div>
+
+        <!-- Players list -->
+        <div class="mb-8">
+            <h2 class="text-xl font-semibold mb-4">Players</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4" 
+                 hx-get="{% url 'party_players' party_code=party_code %}" 
+                 hx-trigger="load, every 5s"
+                 hx-swap="innerHTML">
+                <!-- Player list will be loaded here -->
+            </div>
+
+            <!-- Add player form -->
+            <div class="mt-6">
+                <form hx-post="{% url 'add_player' party_code=party_code %}"
+                      hx-target="closest div.grid"
+                      hx-swap="innerHTML"
+                      class="flex gap-2">
+                    {% csrf_token %}
+                    <input type="text" name="player_name" placeholder="Add player" required
+                           class="flex-1 px-4 py-2 border border-gray-300 rounded-lg">
+                    <button type="submit" class="btn-primary px-4 py-2">
+                        Add
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Team assignment -->
+        <div class="mb-8">
+            <h2 class="text-xl font-semibold mb-4">Teams</h2>
+            
+            <div id="teams-container">
+                <!-- Teams will be loaded here after generation -->
+            </div>
+            
+            <div class="mt-4">
+                <form hx-post="{% url 'generate_teams' party_code=party_code %}"
+                      hx-target="#teams-container"
+                      hx-swap="innerHTML"
+                      class="flex gap-2 items-center">
+                    {% csrf_token %}
+                    <label for="id_num_teams" class="text-sm font-medium text-gray-700">Number of teams:</label>
+                    <input type="number" name="num_teams" id="id_num_teams" min="2" max="10" value="2"
+                           class="w-16 px-2 py-2 border border-gray-300 rounded-lg">
+                    <button type="submit" class="btn-primary px-4 py-2">
+                        Generate Teams
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Random game selector -->
+        <div>
+            <h2 class="text-xl font-semibold mb-4">Random Game</h2>
+            
+            <div id="random-game-container">
+                <!-- Random game will be shown here -->
+            </div>
+            
+            <div class="mt-4">
+                <button class="btn-primary px-4 py-2"
+                        hx-get="{% url 'random_game' party_code=party_code %}"
+                        hx-target="#random-game-container"
+                        hx-swap="innerHTML">
+                    Pick Random Game
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

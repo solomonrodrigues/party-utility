@@ -1,0 +1,46 @@
+{% if game %}
+<div class="bg-gradient-to-r from-indigo-50 to-purple-50 p-6 rounded-lg">
+    <h3 class="text-xl font-bold text-indigo-700 mb-2">{{ game.name }}</h3>
+    <p class="text-gray-700 mb-4">{{ game.description }}</p>
+    
+    {% if game.instructions %}
+    <div class="mb-4">
+        <h4 class="font-semibold text-indigo-600 mb-1">How to Play:</h4>
+        <p class="text-gray-700">{{ game.instructions }}</p>
+    </div>
+    {% endif %}
+    
+    {% if game.materials_needed %}
+    <div class="mb-4">
+        <h4 class="font-semibold text-indigo-600 mb-1">Materials Needed:</h4>
+        <p class="text-gray-700">{{ game.materials_needed }}</p>
+    </div>
+    {% endif %}
+    
+    <div class="flex flex-wrap gap-2 mt-4">
+        {% if game.team_based %}
+        <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">Team Game</span>
+        {% endif %}
+        
+        {% if game.min_players and game.max_players %}
+        <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">
+            {{ game.min_players }}-{{ game.max_players }} Players
+        </span>
+        {% elif game.min_players %}
+        <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">
+            {{ game.min_players }}+ Players
+        </span>
+        {% endif %}
+        
+        {% if game.duration_minutes %}
+        <span class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded">
+            {{ game.duration_minutes }} min
+        </span>
+        {% endif %}
+    </div>
+</div>
+{% else %}
+<div class="text-center py-8">
+    <p class="text-gray-500">Click "Pick Random Game" to get started!</p>
+</div>
+{% endif %}
