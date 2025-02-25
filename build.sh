@@ -1,10 +1,12 @@
 # Install dependencies
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 
+# Create staticfiles directory
 mkdir -p staticfiles_build/static
 
-python3.9 manage.py collectstatic
+# Collect static files
+python manage.py collectstatic --noinput
 
-# Make migrations
-python3.9 manage.py makemigrations
-python3.9 manage.py migrate
+# Make migrations and apply them
+python manage.py makemigrations
+python manage.py migrate
