@@ -89,15 +89,13 @@ MANAGERS = [
 
 IGNORABLE_404_URLS = []
 
-# STATIC_URL = '/static/'
-
-# Include the path to the 'static' directory within the 'layout' app
-# STATICFILES_DIRS = [
-#     BASE_DIR / 'layout' / 'static',
-# ]
+# Include the path to the 'static' directory within the 'partyutility' app
+STATICFILES_DIRS = [
+    BASE_DIR / 'partyutility' / 'static',
+]
 
 # Specify the directory where 'collectstatic' will gather static files for deployment
-# STATIC_ROOT = BASE_DIR / 'staticfiles_build' / 'static'
+STATIC_ROOT = BASE_DIR / 'staticfiles_build' / 'static'
 
 # Whitenoise settings
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
