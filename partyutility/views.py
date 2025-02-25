@@ -13,6 +13,8 @@ from django.urls import reverse
 class CreatePartyForm(forms.Form):
     party_name = forms.CharField(max_length=100, required=False,
                                  widget=forms.TextInput(attrs={'placeholder': 'My Awesome Party'}))
+    player_name = forms.CharField(max_length=50, required=True,
+                                  widget=forms.TextInput(attrs={'placeholder': 'Your name'}))
 
 
 class JoinPartyForm(forms.Form):
@@ -55,6 +57,7 @@ class CreatePartyView(FormView):
 
     def form_valid(self, form):
         party_name = form.cleaned_data.get('party_name', 'Party Room')
+        player_name = form.cleaned_data['player_name']
 
         # Generate a unique party code
         code = self._generate_party_code()
@@ -65,9 +68,20 @@ class CreatePartyView(FormView):
             code=code,
         )
 
+        # Create the first player for this party
+        Player.objects.create(
+            party=party,
+            name=player_name
+        )
+
         # Redirect to the party room
         self.code = code
         return super().form_valid(form)
+
+    def form_invalid(self, form):
+        return render(self.request, 'partyutility/partials/create_party_form.html', {
+            'form': form
+        })
 
     @staticmethod
     def _generate_party_code(length=6):

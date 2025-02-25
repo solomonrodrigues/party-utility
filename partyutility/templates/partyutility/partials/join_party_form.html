@@ -37,10 +37,8 @@
 
     <div class="text-center pt-4">
         <a href="#" class="text-indigo-600 hover:text-indigo-800 text-sm"
-           hx-get="{% url 'index' %}"
-           hx-target="#main-content"
-           hx-swap="innerHTML transition:true">
-            Go back
+           onclick="document.getElementById('main-content').innerHTML = ''">
+            Cancel
         </a>
     </div>
 </form>
