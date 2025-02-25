@@ -10,8 +10,7 @@
       "src": "build_files.sh",
       "use": "@vercel/python",
       "config": {
-        "distDir": "staticfiles_build",
-        "buildCommand": "chmod +x build_files.sh && ./build_files.sh"
+        "distDir": "staticfiles_build"
       }
     }
   ],
