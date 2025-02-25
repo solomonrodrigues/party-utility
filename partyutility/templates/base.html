@@ -12,6 +12,11 @@
     <!-- Tailwind CSS -->
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
 
+    <!-- Google Fonts - Cyberpunk style -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
     <!-- Custom CSS -->
     <link rel="stylesheet" type="text/css" href="{% static 'layout/css/styles.css' %}">
 
@@ -21,10 +26,91 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'layout/favicon_io/favicon-16x16.png' %}">
     <link rel="manifest" href="{% static 'layout/favicon_io/site.webmanifest' %}">
 
+    <style>
+        :root {
+            --neon-cyan: #0ff;
+            --neon-magenta: #f0f;
+            --neon-yellow: #ff0;
+            --dark-bg: #0a0b0e;
+            --darker-bg: #060709;
+            --cyber-blue: #104b8b;
+            --cyber-purple: #4b0082;
+        }
+
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background-color: var(--dark-bg);
+            color: #e0e0e0;
+            background-image:
+                linear-gradient(0deg, rgba(10, 11, 14, 0.95), rgba(10, 11, 14, 0.95)),
+                url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 20h60v60H20V20zm0 0l60 60M80 20L20 80' stroke='%23104b8b' stroke-width='0.5' fill='none'/%3E%3C/svg%3E");
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+        }
+
+        /* Neon text effect */
+        .neon-text {
+            text-shadow:
+                0 0 5px var(--neon-cyan),
+                0 0 10px var(--neon-cyan),
+                0 0 20px var(--neon-cyan);
+        }
+
+        .neon-magenta {
+            text-shadow:
+                0 0 5px var(--neon-magenta),
+                0 0 10px var(--neon-magenta),
+                0 0 20px var(--neon-magenta);
+        }
+
+        .neon-yellow {
+            text-shadow:
+                0 0 5px var(--neon-yellow),
+                0 0 10px var(--neon-yellow),
+                0 0 20px var(--neon-yellow);
+        }
+
+        /* Glitch animation for interactive elements */
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        .glitch:hover {
+            animation: glitch 0.3s linear infinite;
+            position: relative;
+        }
+
+        /* Scanline effect */
+        .scanline {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(16, 75, 139, 0.1) 50%
+            );
+            background-size: 100% 4px;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0.2;
+        }
+    </style>
+
     {% block head_scripts %}
     {% endblock head_scripts %}
 </head>
-<body class="bg-gray-100 text-gray-900">
+<body class="bg-gray-900 text-gray-100">
+    <div class="scanline"></div>
     {% block body %}{% endblock %}
 </body>
 </html>
