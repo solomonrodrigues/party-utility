@@ -90,7 +90,7 @@ MANAGERS = [
 IGNORABLE_404_URLS = []
 
 # Include the path to the 'static' directory within the 'partyutility' app
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'partyutility/static')]
 
 # Specify the directory where 'collectstatic' will gather static files for deployment
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build')
