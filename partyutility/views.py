@@ -1,4 +1,5 @@
 # partyutility/views.py
+from django.http import HttpResponse
 from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView, FormView
 from django.shortcuts import render, redirect, get_object_or_404
@@ -12,7 +13,7 @@ from django.urls import reverse
 # Forms
 class CreatePartyForm(forms.Form):
     party_name = forms.CharField(max_length=100, required=False,
-                                 widget=forms.TextInput(attrs={'placeholder': 'My Awesome Party'}))
+                                 widget=forms.TextInput(attrs={'placeholder': 'My Party'}))
     player_name = forms.CharField(max_length=50, required=True,
                                   widget=forms.TextInput(attrs={'placeholder': 'Your name'}))
 
@@ -20,7 +21,7 @@ class CreatePartyForm(forms.Form):
 class JoinPartyForm(forms.Form):
     party_code = forms.CharField(max_length=6, min_length=6, required=True,
                                  widget=forms.TextInput(attrs={'placeholder': 'Enter 6-digit code'}))
-    player_name = forms.CharField(max_length=50, required=False,
+    player_name = forms.CharField(max_length=50, required=True,
                                   widget=forms.TextInput(attrs={'placeholder': 'Your name'}))
 
 
@@ -42,10 +43,6 @@ class IndexView(TemplateView):
 class CreatePartyView(FormView):
     template_name = 'partyutility/create_party.html'
     form_class = CreatePartyForm
-    code = None
-
-    def get_success_url(self):
-        return reverse('party_room', kwargs={'party_code': self.code})
 
     def get(self, request, *args, **kwargs):
         # For HTMX requests, we just return the form partial
@@ -74,9 +71,13 @@ class CreatePartyView(FormView):
             name=player_name
         )
 
-        # Redirect to the party room
-        self.code = code
-        return super().form_valid(form)
+        # Set the redirect URL
+        redirect_url = reverse('party_room', kwargs={'party_code': code})
+
+        # Return a response with the HX-Redirect header
+        response = HttpResponse()
+        response['HX-Redirect'] = redirect_url
+        return response
 
     def form_invalid(self, form):
         return render(self.request, 'partyutility/partials/create_party_form.html', {
@@ -135,6 +136,11 @@ class JoinPartyView(FormView):
         except Party.DoesNotExist:
             form.add_error('party_code', 'Invalid party code. Please check and try again.')
             return self.form_invalid(form)
+
+    def form_invalid(self, form):
+        return render(self.request, 'partyutility/partials/join_party_form.html', {
+            'form': form
+        })
 
 
 # Party room view
