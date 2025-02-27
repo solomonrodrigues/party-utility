@@ -19,8 +19,8 @@ class CreatePartyForm(forms.Form):
 
 
 class JoinPartyForm(forms.Form):
-    party_code = forms.CharField(max_length=6, min_length=6, required=True,
-                                 widget=forms.TextInput(attrs={'placeholder': 'Enter 6-digit code'}))
+    party_code = forms.CharField(max_length=4, min_length=4, required=True,
+                                 widget=forms.TextInput(attrs={'placeholder': 'Enter 4-digit code'}))
     player_name = forms.CharField(max_length=50, required=True,
                                   widget=forms.TextInput(attrs={'placeholder': 'Your name'}))
 
@@ -85,10 +85,10 @@ class CreatePartyView(FormView):
         })
 
     @staticmethod
-    def _generate_party_code(length=6):
+    def _generate_party_code(length=4):
         """Generate a unique party code"""
         while True:
-            code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
+            code = ''.join(random.choices(string.ascii_uppercase, k=length))
             if not Party.objects.filter(code=code).exists():
                 return code
 
@@ -97,7 +97,6 @@ class CreatePartyView(FormView):
 class JoinPartyView(FormView):
     template_name = 'partyutility/partials/join_party_form.html'
     form_class = JoinPartyForm
-    code = None
 
     def get_success_url(self):
         return reverse('party_room', kwargs={'party_code': self.code})
@@ -126,8 +125,13 @@ class JoinPartyView(FormView):
                 name=player_name
             )
 
-            self.code = party_code
-            return super().form_valid(form)
+            # Set the redirect URL
+            redirect_url = reverse('party_room', kwargs={'party_code': party_code})
+
+            # Return a response with the HX-Redirect header
+            response = HttpResponse()
+            response['HX-Redirect'] = redirect_url
+            return response
 
         except Party.DoesNotExist:
             form.add_error('party_code', 'Invalid party code. Please check and try again.')

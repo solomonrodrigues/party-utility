@@ -11,9 +11,19 @@
                 <h1 class="text-2xl font-bold">Party Room: <span class="text-indigo-600">{{ party_code }}</span></h1>
                 <p class="text-gray-600">Share this code with your friends to join</p>
             </div>
-            <button class="btn-secondary text-sm px-4 py-2" onclick="navigator.clipboard.writeText('{{ party_code }}')">
-                Copy Code
-            </button>
+            <div class="relative flex items-center space-x-2">
+                <!-- Tick Icon (Initially Hidden) -->
+                <svg id="copy-tick" class="h-5 w-5 text-green-600 opacity-0 transition-opacity duration-300"
+                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M5 13l4 4L19 7"/>
+                </svg>
+
+                <!-- Copy Button -->
+                <button class="btn-secondary text-sm px-4 py-2" onclick="copyToClipboard(this, '{{ party_code }}')">
+                    Copy Code
+                </button>
+            </div>
         </div>
 
         <!-- Players list -->
@@ -85,4 +95,16 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block head_scripts %}
+<script>
+    function copyToClipboard(button, text) {
+        navigator.clipboard.writeText(text).then(() => {
+            const tickIcon = document.getElementById('copy-tick');
+            tickIcon.classList.remove('opacity-0');
+            setTimeout(() => tickIcon.classList.add('opacity-0'), 1500);
+        });
+    }
+</script>
 {% endblock %}

@@ -10,7 +10,7 @@ class Party(models.Model):
     """Party room where players join and games are played"""
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100, default="Party Room")
-    code = models.CharField(max_length=6, unique=True)
+    code = models.CharField(max_length=4, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     active = models.BooleanField(default=True)
     last_activity = models.DateTimeField(auto_now=True)
