@@ -68,7 +68,8 @@ class CreatePartyView(FormView):
         # Create the first player for this party
         Player.objects.create(
             party=party,
-            name=player_name
+            name=player_name,
+            is_host=True,
         )
 
         # Set the redirect URL
@@ -174,6 +175,7 @@ class PartyRoomView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['players'] = self.get_object().players
         context['party_code'] = self.kwargs['party_code']
         current_player = self.get_current_player()
         context['current_player'] = current_player
@@ -211,7 +213,6 @@ class AddPlayerView(View):
             Player.objects.create(
                 party=party,
                 name=player_name,
-                user=None  # These are manually added players, not tied to users
             )
 
         # Return updated player list
