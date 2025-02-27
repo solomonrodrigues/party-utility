@@ -120,7 +120,7 @@ class JoinPartyView(FormView):
             player_name = player_name or f"Guest-{random.randint(1000, 9999)}"
 
             # Create new player for the party
-            Player.objects.create(
+            Player.objects.get_or_create(
                 party=party,
                 name=player_name
             )
