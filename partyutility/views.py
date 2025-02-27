@@ -41,13 +41,13 @@ class IndexView(TemplateView):
 
 # Create party views
 class CreatePartyView(FormView):
-    template_name = 'partyutility/create_party.html'
+    template_name = 'partyutility/partials/create_party_form.html'
     form_class = CreatePartyForm
 
     def get(self, request, *args, **kwargs):
         # For HTMX requests, we just return the form partial
         if request.headers.get('HX-Request'):
-            return render(request, 'partyutility/partials/create_party_form.html', {
+            return render(request, self.template_name, {
                 'form': self.form_class()
             })
         return super().get(request, *args, **kwargs)
@@ -95,7 +95,7 @@ class CreatePartyView(FormView):
 
 # Join party views
 class JoinPartyView(FormView):
-    template_name = 'partyutility/join_party.html'
+    template_name = 'partyutility/partials/join_party_form.html'
     form_class = JoinPartyForm
     code = None
 
@@ -105,7 +105,7 @@ class JoinPartyView(FormView):
     def get(self, request, *args, **kwargs):
         # For HTMX requests, we just return the form partial
         if request.headers.get('HX-Request'):
-            return render(request, 'partyutility/partials/join_party_form.html', {
+            return render(request, self.template_name, {
                 'form': self.form_class()
             })
         return super().get(request, *args, **kwargs)
