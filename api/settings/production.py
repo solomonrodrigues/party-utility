@@ -3,7 +3,7 @@ from .base import *
 # import sentry_sdk
 # from sentry_sdk.integrations.django import DjangoIntegration
 
-SECRET_KEY = "g_-ipa)6_5+zgug=$u!gbmk#bi(6p=r2xjukh6h2p&3kt$%^w%"
+SECRET_KEY = os.environ['SECRET_KEY']
 
 DEBUG = False
 ROOT_URLCONF = 'api.urls'
