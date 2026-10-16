@@ -1,105 +1,64 @@
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fexamples%2Ftree%2Fmain%2Fpython%2Fdjango&demo-title=Django%20%2B%20Vercel&demo-description=Use%20Django%204%20on%20Vercel%20with%20Serverless%20Functions%20using%20the%20Python%20Runtime.&demo-url=https%3A%2F%2Fdjango-template.vercel.app%2F&demo-image=https://assets.vercel.com/image/upload/v1669994241/random/django.png)
+# Party Utility 🎉
 
-# Django + Vercel
+A lightweight web app for running party games in real life. One person opens a room, everyone joins with a 4-letter code, and the app handles the admin: who's playing, who's on which team, and what game to play next.
 
-This example shows how to use Django 4 on Vercel with Serverless Functions using the [Python Runtime](https://vercel.com/docs/concepts/functions/serverless-functions/runtimes/python).
+**Live:** [party-utility.vercel.app](https://party-utility.vercel.app)
 
-## Demo
+## Features
 
-https://django-template.vercel.app/
+- **Party rooms with join codes.** Create a room and share its 4-letter code (like `MTHL`). Friends join from their own phones, no account needed.
+- **Live player list.** The room refreshes every few seconds, so new arrivals show up on every screen. The host can add or remove players by hand for anyone without a phone.
+- **Random teams.** Pick how many teams (2–10) and players are shuffled and split evenly, each team with its own colour.
+- **Random game picker.** Draws a game from the game library (managed in the Django admin), falling back to classics like Charades and Two Truths and a Lie. Each pick is logged as a game session for the party.
 
-## How it Works
+## Built with
 
-Our Django application, `partyutility` is configured as an installed application in `api/settings.py`:
+- **Django 5.2** on Python 3.13
+- **HTMX** for the interactive bits (forms, live player list, team generation) with no front-end build step
+- **Tailwind CSS**
+- **PostgreSQL**
+- **Vercel** for hosting, using its Django preset
 
-```python
-# api/settings.py
-INSTALLED_APPS = [
-    # ...
-    'partyutility',
-]
-```
+## How it works
 
-We allow "\*.vercel.app" subdomains in `ALLOWED_HOSTS`, in addition to 127.0.0.1:
+The app is a single Django app, `partyutility`, with the data model in `partyutility/models.py`:
 
-```python
-# api/settings.py
-ALLOWED_HOSTS = ['127.0.0.1', '.vercel.app']
-```
+| Model | Purpose |
+|---|---|
+| `Party` | A room with a unique 4-letter code |
+| `Player` | Someone in a party; the creator is marked as host |
+| `Team` | A coloured team within a party, regenerated on each shuffle |
+| `Game` | A game in the library: player counts, duration, materials, instructions |
+| `GameSession` | A record of a game picked during a party |
 
-The `wsgi` module must use a public variable named `app` to expose the WSGI application:
+Every page action is a small HTMX request that returns an HTML partial (`partyutility/templates/partyutility/partials/`), so the views stay as plain Django views and there's no JavaScript to maintain.
 
-```python
-# api/wsgi.py
-app = get_wsgi_application()
-```
+## Running locally
 
-The corresponding `WSGI_APPLICATION` setting is configured to use the `app` variable from the `api.wsgi` module:
-
-```python
-# api/settings.py
-WSGI_APPLICATION = 'api.wsgi.app'
-```
-
-There is a single view which renders the current time in `partyutility/views.py`:
-
-```python
-# partyutility/views.py
-from datetime import datetime
-
-from django.http import HttpResponse
-
-
-def index(request):
-    now = datetime.now()
-    html = f'''
-    <html>
-        <body>
-            <h1>Hello from Vercel!</h1>
-            <p>The current time is { now }.</p>
-        </body>
-    </html>
-    '''
-    return HttpResponse(html)
-```
-
-This view is exposed a URL through `partyutility/urls.py`:
-
-```python
-# partyutility/urls.py
-from django.urls import path
-
-from partyutility.views import index
-
-urlpatterns = [
-    path('', index),
-]
-```
-
-Finally, it's made accessible to the Django server inside `api/urls.py`:
-
-```python
-# api/urls.py
-from django.urls import path, include
-
-urlpatterns = [
-    ...
-    path('', include('partyutility.urls')),
-]
-```
-
-This example uses the Web Server Gateway Interface (WSGI) with Django to enable handling requests on Vercel with Serverless Functions.
-
-## Running Locally
+You'll need Python 3.13 and Docker (for Postgres).
 
 ```bash
-python manage.py runserver
+# Start a Postgres database
+docker run -d --name partydb -p 5432:5432 \
+  -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=partydb postgres:16
+
+# Install dependencies and set up the database
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+POSTGRES_HOST=localhost python manage.py migrate
+
+# Run the dev server
+POSTGRES_HOST=localhost python manage.py runserver
 ```
 
-Your Django application is now available at `http://localhost:8000`.
+Then open http://localhost:8000. To add games to the library, create an admin user with `python manage.py createsuperuser` and visit `/admin/`.
 
-## One-Click Deploy
+Settings live in `api/settings/`: `development.py` is used locally, `production.py` on Vercel.
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=vercel-examples):
+## Deployment
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fexamples%2Ftree%2Fmain%2Fpython%2Fdjango&demo-title=Django%20%2B%20Vercel&demo-description=Use%20Django%204%20on%20Vercel%20with%20Serverless%20Functions%20using%20the%20Python%20Runtime.&demo-url=https%3A%2F%2Fdjango-template.vercel.app%2F&demo-image=https://assets.vercel.com/image/upload/v1669994241/random/django.png)
+Pushes to `main` deploy to Vercel. The build runs `vercel_build.py`, which applies migrations on production deploys, and Vercel collects static files automatically. Production needs these environment variables:
+
+- `DJANGO_SETTINGS_MODULE=api.settings.production`
+- `SECRET_KEY`
+- `POSTGRES_HOST`, `POSTGRES_DATABASE`, `POSTGRES_USER`, `POSTGRES_PASSWORD`

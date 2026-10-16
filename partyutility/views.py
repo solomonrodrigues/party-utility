@@ -20,7 +20,7 @@ class CreatePartyForm(forms.Form):
 
 class JoinPartyForm(forms.Form):
     party_code = forms.CharField(max_length=4, min_length=4, required=True,
-                                 widget=forms.TextInput(attrs={'placeholder': 'Enter 4-digit code'}))
+                                 widget=forms.TextInput(attrs={'placeholder': 'Enter 4-letter code'}))
     player_name = forms.CharField(max_length=50, required=True,
                                   widget=forms.TextInput(attrs={'placeholder': 'Your name'}))
 
